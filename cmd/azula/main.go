@@ -1,12 +1,13 @@
 package main
 
 import (
-	"intcli/pkg/azula/delivery/cli"
-	"intcli/pkg/azula/repository/docker"
-	"intcli/pkg/azula/repository/docker/auth"
-	"intcli/pkg/azula/usecase"
 	"net/url"
 	"os"
+
+	"github.com/nikgalkin/azula/pkg/azula/delivery/cli"
+	"github.com/nikgalkin/azula/pkg/azula/repository/docker"
+	"github.com/nikgalkin/azula/pkg/azula/repository/docker/auth"
+	"github.com/nikgalkin/azula/pkg/azula/usecase"
 )
 
 func main() {

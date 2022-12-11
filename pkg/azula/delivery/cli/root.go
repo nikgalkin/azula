@@ -3,7 +3,7 @@ package cli
 import (
 	"os"
 
-	"intcli/pkg/azula/usecase"
+	"github.com/nikgalkin/azula/pkg/azula/usecase"
 
 	"github.com/spf13/cobra"
 )

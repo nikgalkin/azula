@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"intcli/pkg/azula/repository/docker/registry"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/nikgalkin/azula/pkg/azula/repository/docker/registry"
 
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/registry/client"

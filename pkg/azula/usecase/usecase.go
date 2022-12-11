@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"intcli/pkg/azula/repository/docker"
+	"github.com/nikgalkin/azula/pkg/azula/repository/docker"
 
 	"github.com/docker/distribution"
 )
