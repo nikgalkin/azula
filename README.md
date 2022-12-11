@@ -1,12 +1,13 @@
 # Azula a registry manipulator
 
 Basically, I created this repo to play with a clean architecture design pattern.  
-But nevertheless, there are some useful functions like deleting tags from the remote registry by picking them interactively :]
+But nevertheless, there are some useful functions like deleting tags from the remote registry by picking them interactively, thx to [go-survey](https://github.com/go-survey/survey) for it :]
 
 ## Local registry with auth
 
 ```shell
-# Start local registry
+# Start local registry with next creds:
+# user: testuser pass: testpassword
 ./_scripts/registry.sh up
 
 # Stop and delete container
