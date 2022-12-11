@@ -16,7 +16,21 @@ But nevertheless, there are some useful functions like deleting tags from the re
 
 ## Usage example
 
+Run with go run
+
 ```shell
 # Note, you should be logged in with `docker login` into manipulated registry first
-MAN_REGISTRY="https://your.registry.com" go run ./cmd/azula/main.go img del -l name_part
+AZULA_REGISTRY="https://your.registry.com" go run ./cmd/azula/main.go img del -l name_part
+```
+
+Run with binary
+
+```shell
+# Install binary
+go install github.com/nikgalkin/azula/cmd/azula@latest
+# Run
+AZULA_REGISTRY="https://your.registry.com" azula img ls
+
+# Delet binary
+go clean -i github.com/nikgalkin/azula/cmd/azula
 ```

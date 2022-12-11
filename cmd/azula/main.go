@@ -28,7 +28,7 @@ func genRegistryInit() (*docker.RegistryInit, error) {
 		return &docker.RegistryInit{}, err
 	}
 
-	registry := os.Getenv("MAN_REGISTRY")
+	registry := os.Getenv("AZULA_REGISTRY")
 	if len(registry) < 1 {
 		registry = "http://127.0.0.1:5000"
 	}
