@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -83,9 +84,12 @@ func (r *Registry) GetRepo(ctx context.Context, name string) (distribution.Repos
 }
 
 func (r *Registry) GetV2Descriptor(ctx context.Context, name, tag string) (distribution.Descriptor, error) {
-	url := r.URL + "/v2/" + name + "/manifests/" + tag
+	u, err := url.Parse(r.URL)
+	if err != nil {
+		return distribution.Descriptor{}, err
+	}
 	mediaType := "application/vnd.docker.distribution.manifest.v2+json"
-	req, err := http.NewRequest(http.MethodHead, url, nil)
+	req, err := http.NewRequest(http.MethodHead, u.JoinPath("v2", name, "manifests", tag).String(), nil)
 	if err != nil {
 		return distribution.Descriptor{}, err
 	}

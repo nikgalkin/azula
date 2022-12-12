@@ -24,7 +24,7 @@ func New(uc usecase.ManUsecase) CliHandler {
 
 var rootCmd = &cobra.Command{
 	Use:   "azula",
-	Short: "It manipulates with docker registry objects",
+	Short: "Manipulates with docker registry objects",
 	Long: `Use environment variable AZULA_REGISTRY to pass registry address. By default http://127.0.0.1:5000
   example:
     export AZULA_REGISTRY=https://some-registry.domain.com`,
@@ -32,6 +32,10 @@ var rootCmd = &cobra.Command{
 
 var (
 	meta = &cli{}
+)
+
+const (
+	mgmtBack = "<= back"
 )
 
 func (c *cli) Execute() {

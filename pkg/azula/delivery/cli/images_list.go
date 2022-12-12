@@ -24,9 +24,13 @@ func ImagesList(cmd *cobra.Command, args []string) {
 
 	repos, err := meta.UC.ListReposLike(ctx, like)
 	cobra.CheckErr(err)
-	pickedRepos := SurveyCheckboxes("In which repositories do you want to list images?", repos)
+BACK:
+	pickedRepos := SurveyList("In which repositories do you want to list images?", repos)
 
-	repoTags, err := meta.UC.GetImagesWithTags(ctx, pickedRepos)
+	repoTags, err := meta.UC.GetImagesWithTags(ctx, []string{pickedRepos})
 	cobra.CheckErr(err)
-	SurveyList("Found images:", repoTags)
+	back := SurveyList("Found images:", append(repoTags, mgmtBack))
+	if back == mgmtBack {
+		goto BACK
+	}
 }

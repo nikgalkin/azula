@@ -9,7 +9,7 @@ cmd="docker"
 
 help(){
 local cmd="./_scripts/registry"
-echo "  ERROR! Command $1 not supported
+echo "  ERROR! Command '$1' not supported
   Usage:
     $cmd u    - Up registry for dev purposes
     $cmd ps   - Get status of container

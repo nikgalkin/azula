@@ -1,4 +1,4 @@
-# Azula a registry manipulator
+# Azula a docker registry manipulator
 
 Basically, I created this repo to play with a clean architecture design pattern.  
 But nevertheless, there are some useful functions like deleting tags from the remote registry by picking them interactively, thx to [go-survey](https://github.com/go-survey/survey) for it :]
@@ -16,14 +16,14 @@ But nevertheless, there are some useful functions like deleting tags from the re
 
 ## Usage example
 
-Run with go run
+### Run with go run
 
 ```shell
 # Note, you should be logged in with `docker login` into manipulated registry first
 AZULA_REGISTRY="https://your.registry.com" go run ./cmd/azula/main.go img del -l name_part
 ```
 
-Run with binary
+### Run with binary
 
 ```shell
 # Install binary
@@ -31,6 +31,6 @@ go install github.com/nikgalkin/azula/cmd/azula@latest
 # Run
 AZULA_REGISTRY="https://your.registry.com" azula img ls
 
-# Delet binary
+# Delete binary
 go clean -i github.com/nikgalkin/azula/cmd/azula
 ```
