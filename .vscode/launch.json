@@ -2,12 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "man delete",
+      "name": "img ls",
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${fileDirname}",
-      "args": ["images", "del"]
+      "program": "cmd/azula/main.go",
+      "args": [
+        "images",
+        "ls"
+      ]
     }
   ]
 }

@@ -56,20 +56,22 @@ func (r *Registry) ListReposLike(ctx context.Context, like string, max_entries i
 		step = max_entries
 	}
 	entries := make([]string, step)
+	result := make([]string, 0, step)
 	var err error
 	var n int
 	for {
-		n, err = r.Registry.Repositories(ctx, entries, "")
+		n, err = r.Registry.Repositories(ctx, entries, getLastRepo(entries))
 		if err == nil {
-			if len(entries) >= max_entries {
+			result = append(result, entries[:n]...)
+			if len(result) >= max_entries {
 				fmt.Printf(
-					"WARN: exceeded limit of repos entries %d(len: %d, cap: %d). You can change it with flag '-e'\n",
-					max_entries, len(entries), cap(entries))
+					"WARN: exceeded limit of repos entries %d(len: %d). You can change it with flag '-e'\n",
+					max_entries, len(result))
 				break
 			}
-			entries = append(entries, make([]string, step)...)
 			continue
 		} else if err == io.EOF {
+			result = append(result, entries[:n]...)
 			break
 		} else if err != nil {
 			return []string{}, err
@@ -77,15 +79,25 @@ func (r *Registry) ListReposLike(ctx context.Context, like string, max_entries i
 	}
 	if len(like) > 0 {
 		n = 0
-		for _, v := range entries {
+		for _, v := range result {
 			if strings.Contains(v, like) {
-				entries[n] = v
+				result[n] = v
 				n += 1
 			}
 		}
+		return result[:n], nil
 	}
 
-	return entries[:n], nil
+	return result, nil
+}
+
+func getLastRepo(entries []string) string {
+	for p := len(entries) - 1; p >= 0; p-- {
+		if len(entries[p]) > 0 {
+			return entries[p]
+		}
+	}
+	return ""
 }
 
 func (r *Registry) GetRepo(ctx context.Context, name string) (distribution.Repository, error) {
