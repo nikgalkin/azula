@@ -61,34 +61,31 @@ func (r *Registry) ListReposLike(ctx context.Context, like string, max_entries i
 	var n int
 	for {
 		n, err = r.Registry.Repositories(ctx, entries, getLastRepo(entries))
-		if err == nil {
-			result = append(result, entries[:n]...)
-			if len(result) >= max_entries {
-				fmt.Printf(
-					"WARN: exceeded limit of repos entries %d(len: %d). You can change it with flag '-e'\n",
-					max_entries, len(result))
-				break
-			}
-			continue
-		} else if err == io.EOF {
-			result = append(result, entries[:n]...)
+		result = append(result, entries[:n]...)
+		if err == io.EOF {
 			break
 		} else if err != nil {
 			return []string{}, err
 		}
-	}
-	if len(like) > 0 {
-		n = 0
-		for _, v := range result {
-			if strings.Contains(v, like) {
-				result[n] = v
-				n += 1
-			}
+		if len(result) >= max_entries {
+			fmt.Printf(
+				"WARN: exceeded limit of repos entries %d(len: %d). You can change it with flag '-e'\n",
+				max_entries, len(result))
+			break
 		}
-		return result[:n], nil
+	}
+	if len(like) < 1 {
+		return result, nil
 	}
 
-	return result, nil
+	n = 0
+	for _, v := range result {
+		if strings.Contains(v, like) {
+			result[n] = v
+			n += 1
+		}
+	}
+	return result[:n], nil
 }
 
 func getLastRepo(entries []string) string {
