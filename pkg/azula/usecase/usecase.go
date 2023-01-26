@@ -15,7 +15,7 @@ type usecase struct {
 }
 
 type ManUsecase interface {
-	ListReposLike(context.Context, string) ([]string, error)
+	ListReposLike(context.Context, string, int) ([]string, error)
 	GetImagesWithTags(context.Context, []string) ([]string, error)
 	DeleteImageByTag(context.Context, []string) error
 }
@@ -26,8 +26,8 @@ func New(reg docker.Manager) ManUsecase {
 	}
 }
 
-func (u *usecase) ListReposLike(ctx context.Context, like string) ([]string, error) {
-	return u.Registry.ListReposLike(ctx, like)
+func (u *usecase) ListReposLike(ctx context.Context, like string, max_entries int) ([]string, error) {
+	return u.Registry.ListReposLike(ctx, like, max_entries)
 }
 
 func (u *usecase) GetImagesWithTags(ctx context.Context, repos []string) ([]string, error) {

@@ -17,14 +17,12 @@ var imagesDeleteCmd = &cobra.Command{
 
 func init() {
 	imagesCmd.AddCommand(imagesDeleteCmd)
-	imagesDeleteCmd.Flags().StringP("like", "l", "", "filter images by string")
 }
 
 func ImagesDelete(cmd *cobra.Command, args []string) {
 	ctx := context.TODO()
-	like := cmd.Flag("like").Value.String()
 
-	repos, err := meta.UC.ListReposLike(ctx, like)
+	repos, err := meta.UC.ListReposLike(ctx, like, max_entries)
 	cobra.CheckErr(err)
 	pickedRepos := SurveyCheckboxes("In which repositories do you want to delete images?", repos)
 

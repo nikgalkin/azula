@@ -30,7 +30,7 @@ type RegistryInit struct {
 }
 
 type Manager interface {
-	ListReposLike(context.Context, string) ([]string, error)
+	ListReposLike(context.Context, string, int) ([]string, error)
 	GetRepo(context.Context, string) (distribution.Repository, error)
 	GetV2Descriptor(context.Context, string, string) (distribution.Descriptor, error)
 }
@@ -50,14 +50,23 @@ func (init *RegistryInit) New() (Manager, error) {
 	return &dr, nil
 }
 
-func (r *Registry) ListReposLike(ctx context.Context, like string) ([]string, error) {
-	step := 20
+func (r *Registry) ListReposLike(ctx context.Context, like string, max_entries int) ([]string, error) {
+	step := 50
+	if max_entries < step {
+		step = max_entries
+	}
 	entries := make([]string, step)
 	var err error
 	var n int
 	for {
 		n, err = r.Registry.Repositories(ctx, entries, "")
 		if err == nil {
+			if len(entries) >= max_entries {
+				fmt.Printf(
+					"WARN: exceeded limit of repos entries %d(len: %d, cap: %d). You can change it with flag '-e'\n",
+					max_entries, len(entries), cap(entries))
+				break
+			}
 			entries = append(entries, make([]string, step)...)
 			continue
 		} else if err == io.EOF {
@@ -103,10 +112,9 @@ func (r *Registry) GetV2Descriptor(ctx context.Context, name, tag string) (distr
 
 	if resp.StatusCode >= 200 && resp.StatusCode < 400 && len(resp.Header.Get("Docker-Content-Digest")) > 0 {
 		return descriptorFromResponse(resp)
-	} else {
-		return distribution.Descriptor{}, fmt.Errorf("can't retrive description for %s:%s", name, tag)
 	}
 
+	return distribution.Descriptor{}, fmt.Errorf("can't retrive description for %s:%s", name, tag)
 }
 
 func descriptorFromResponse(response *http.Response) (distribution.Descriptor, error) {
