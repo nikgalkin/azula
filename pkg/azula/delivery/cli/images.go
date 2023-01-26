@@ -19,8 +19,8 @@ var (
 
 func init() {
 	rootCmd.AddCommand(imagesCmd)
-	imagesListCmd.Flags().IntVarP(&max_entries, "entries", "e", 500, "set max entries of repositories")
-	imagesListCmd.Flags().StringVarP(&like, "like", "l", "", "filter images by string")
+	imagesCmd.PersistentFlags().IntVarP(&max_entries, "entries", "e", 500, "set max entries of repositories")
+	imagesCmd.PersistentFlags().StringVarP(&like, "like", "l", "", "filter images by string")
 }
 
 func Images(cmd *cobra.Command, args []string) {
