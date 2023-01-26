@@ -4,14 +4,17 @@ git_root=$(git rev-parse --show-toplevel)
 registry_files="$git_root/.dev/registry"
 basic_auth_file="$git_root/.dev/auth/htpasswd"
 registry_name="test_registry"
-mkdir -p $registry_files
+registry_port=5000
 cmd="docker"
+
+mkdir -p $registry_files
 
 help(){
 local cmd="./_scripts/registry"
 echo "  ERROR! Command '$1' not supported
   Usage:
     $cmd u    - Up registry for dev purposes
+    $cmd f    - Fill the local registry with some images (\$2 = count, \$3 = name)
     $cmd ps   - Get status of container
     $cmd d    - Stop and destroy container
     $cmd l    - Follow the logs
@@ -35,7 +38,7 @@ fi
 up_registry() {
 gen_basic_auth
 docker run -d \
-  -p 5000:5000 \
+  -p $registry_port:5000 \
   --restart=always \
   --name $registry_name \
   -v $(dirname $basic_auth_file):/auth \
@@ -52,9 +55,30 @@ down(){
   $cmd rm $registry_name
 }
 
+fill(){
+  local src_img=hello-world:latest
+  if [[ $fill_max < 1 ]]; then
+    fill_max=1
+  fi
+  if [[ -z $img_name ]]; then
+    img_name=test
+  fi
+  $cmd pull $src_img
+  for ((i=1; i<=$fill_max; i++)); do
+    dst_img=127.0.0.1:$registry_port/$img_name-$i:v0.1
+    $cmd tag $src_img $dst_img
+    $cmd push $dst_img
+    $cmd rmi $dst_img
+  done
+}
+
 case $1 in
   up|u)
     up_registry ;;
+  fill|f)
+    fill_max=$2
+    img_name=$3
+    fill ;;
   ps)
     $cmd ps ;;
   stop|s)

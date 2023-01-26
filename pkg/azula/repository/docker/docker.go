@@ -69,7 +69,7 @@ func (r *Registry) ListReposLike(ctx context.Context, like string, max_entries i
 		}
 		if len(result) >= max_entries {
 			fmt.Printf(
-				"WARN: exceeded limit of repos entries %d(len: %d). You can change it with flag '-e'\n",
+				"WARN: exceeded limit of repos entries %d(len: %d). You can change it with '-e' flag\n",
 				max_entries, len(result))
 			break
 		}

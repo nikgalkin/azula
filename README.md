@@ -10,6 +10,9 @@ But nevertheless, there are some useful functions like deleting tags from the re
 # user: testuser pass: testpassword
 ./_scripts/registry.sh up
 
+# Upload some images to local registry
+./_scripts/registry.sh fill 10 appa
+
 # Stop and delete container
 ./_scripts/registry.sh down
 ```
